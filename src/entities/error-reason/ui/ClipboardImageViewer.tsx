@@ -13,8 +13,8 @@ export const ClipboardImageViewer: React.FC<ClipboardImageViewerProps> = ({
     imageSrc ?? null,
   );
 
-  const [isReadingFromClipboard, setIsReadingFromClipboard] =
-    useState<boolean>(false);
+  // const [isReadingFromClipboard, setIsReadingFromClipboard] =
+  //   useState<boolean>(false);
   const [clipboardError, setClipboardError] = useState<string | null>(null);
 
   const displayedTitle = title ?? "Причина ошибки";
@@ -27,55 +27,55 @@ export const ClipboardImageViewer: React.FC<ClipboardImageViewerProps> = ({
     setLocalImageSrc(imageSrc);
   }, [imageSrc]);
 
-  const handlePasteFromClipboard = async () => {
-    if (!("clipboard" in navigator) || !("read" in navigator.clipboard)) {
-      setClipboardError(
-        "Чтение изображений из буфера обмена не поддерживается в этом браузере.",
-      );
-      return;
-    }
-
-    setIsReadingFromClipboard(true);
-
-    try {
-      const items = await navigator.clipboard.read();
-
-      if (!items.length) {
-        setClipboardError("Буфер обмена пуст или в нём нет поддерживаемых данных.");
-        return;
-      }
-
-      let imageBlob: Blob | null = null;
-
-      for (const item of items) {
-        const imageType = item.types.find((type) => type.startsWith("image/"));
-
-        if (!imageType) {
-          // eslint-disable-next-line no-continue
-          continue;
-        }
-
-        const blob = await item.getType(imageType);
-        imageBlob = blob;
-        break;
-      }
-
-      if (!imageBlob) {
-        setClipboardError("В буфере обмена не найдено изображений.");
-        return;
-      }
-
-      const objectUrl = URL.createObjectURL(imageBlob);
-      setLocalImageSrc(objectUrl);
-      setClipboardError(null);
-    } catch {
-      setClipboardError(
-        "Не удалось прочитать изображение из буфера обмена. Браузер может требовать дополнительное разрешение или пользовательский жест.",
-      );
-    } finally {
-      setIsReadingFromClipboard(false);
-    }
-  };
+  // const handlePasteFromClipboard = async () => {
+  //   if (!("clipboard" in navigator) || !("read" in navigator.clipboard)) {
+  //     setClipboardError(
+  //       "Чтение изображений из буфера обмена не поддерживается в этом браузере.",
+  //     );
+  //     return;
+  //   }
+  //
+  //   setIsReadingFromClipboard(true);
+  //
+  //   try {
+  //     const items = await navigator.clipboard.read();
+  //
+  //     if (!items.length) {
+  //       setClipboardError("Буфер обмена пуст или в нём нет поддерживаемых данных.");
+  //       return;
+  //     }
+  //
+  //     let imageBlob: Blob | null = null;
+  //
+  //     for (const item of items) {
+  //       const imageType = item.types.find((type) => type.startsWith("image/"));
+  //
+  //       if (!imageType) {
+  //         // eslint-disable-next-line no-continue
+  //         continue;
+  //       }
+  //
+  //       const blob = await item.getType(imageType);
+  //       imageBlob = blob;
+  //       break;
+  //     }
+  //
+  //     if (!imageBlob) {
+  //       setClipboardError("В буфере обмена не найдено изображений.");
+  //       return;
+  //     }
+  //
+  //     const objectUrl = URL.createObjectURL(imageBlob);
+  //     setLocalImageSrc(objectUrl);
+  //     setClipboardError(null);
+  //   } catch {
+  //     setClipboardError(
+  //       "Не удалось прочитать изображение из буфера обмена. Браузер может требовать дополнительное разрешение или пользовательский жест.",
+  //     );
+  //   } finally {
+  //     setIsReadingFromClipboard(false);
+  //   }
+  // };
 
   return (
     <div className="flex w-full flex-col gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
